@@ -1,0 +1,85 @@
+parameters:
+- name: env
+  type: string
+- name: workingDirectory  # $(System.DefaultWorkingDiretory)/drinks.web
+  type: string
+- name: artifactName
+  type: string
+- name: branchType
+  type: string
+- name: dockerFileName
+  type: string
+
+steps:
+- task: NodeTool@0
+  displayName: 'Install node'
+  inputs:
+    versionSpec: '21.5.x'
+
+- script: |
+    npm install -g yarn
+  displayName: 'Install yarn'
+
+- script: |
+    yarn pre-ins
+  displayName: 'Pre-install dependencies'
+  workingDirectory: ${{ parameters.workingDirectory }}
+  
+- script: |
+    yarn ins
+  displayName: 'Install dependencies'
+  workingDirectory: ${{ parameters.workingDirectory }}
+
+- script: |
+    yarn lint
+  displayName: 'UI run lint'
+  workingDirectory: ${{ parameters.workingDirectory }}
+
+- script: |
+    yarn test
+  displayName: 'UI run tests'
+  workingDirectory: ${{ parameters.workingDirectory }}
+
+- script: |
+    yarn build:prod
+  displayName: 'UI run build'
+  workingDirectory: ${{ parameters.workingDirectory }}
+
+- task: CopyFiles@2
+  displayName: 'UI copy build artifacts'
+  inputs:
+    SourceFolder: '${{ parameters.workingDirectory }}/dist'
+    Contents: '**/*'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/ui/dist'
+    OverWrite: true
+
+- task: CopyFiles@2
+  displayName: 'UI copy .env'
+  inputs:
+    SourceFolder: '${{ parameters.workingDirectory }}/'
+    Contents: '.env'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/ui'
+    OverWrite: true
+
+- task: CopyFiles@2
+  displayName: 'UI copy env.sh bash'
+  inputs:
+    SourceFolder: '${{ parameters.workingDirectory }}/'
+    Contents: 'env.sh'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/ui'
+    OverWrite: true
+
+- task: CopyFiles@2
+  displayName: 'UI copy docker file'
+  inputs:
+    SourceFolder: '${{ parameters.workingDirectory }}/'
+    Contents: '${{ parameters.dockerFileName }}'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/ui'
+    OverWrite: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'UI publish artifact'
+  condition: and(not(or(failed(), canceled())), eq('${{ parameters.branchType }}', 'main'))
+  inputs:
+    PathToPublish: '$(Build.ArtifactStagingDirectory)/ui'
+    ArtifactName: '${{ parameters.artifactName }}'

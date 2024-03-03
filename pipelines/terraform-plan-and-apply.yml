@@ -1,0 +1,67 @@
+parameters:
+  - name: serviceConnectionName
+    type: string
+  - name: terraformStateResourceGroup
+    type: string
+  - name: terraformStateStorageAccount
+    type: string
+  - name: terraformStateContainerName
+    type: string
+  - name: terraformStateBlobKey
+    type: string
+  - name: branchType
+    type: string
+  - name: workingDirectory
+    type: string
+  - name: env
+    type: string
+  - name: tag
+    type: string
+
+steps:
+- checkout: self
+  displayName: 'Checkout repository'
+
+- task: TerraformInstaller@1
+  displayName: 'Terraform > Install Latest'
+  inputs:
+    terraformVersion: 'latest'
+
+- task: TerraformTaskV4@4
+  displayName: 'Terraform > Init'
+  inputs:
+    command: 'init'
+    provider: 'azurerm'
+    ensureBackend: true
+    workingDirectory: '${{ parameters.workingDirectory }}'
+    backendServiceArm: '${{ parameters.serviceConnectionName }}'
+    backendAzureRmResourceGroupName: '${{ parameters.terraformStateResourceGroup }}'
+    backendAzureRmStorageAccountName: '${{ parameters.terraformStateStorageAccount }}'
+    backendAzureRmContainerName: '${{ parameters.terraformStateContainerName }}'
+    backendAzureRmKey: '${{ parameters.terraformStateBlobKey }}'
+
+- task: TerraformTaskV4@4
+  displayName: 'Terraform > Validate'
+  inputs:
+    command: 'validate'
+    provider: 'azurerm'
+    workingDirectory: '${{ parameters.workingDirectory }}'
+
+- task: TerraformTaskV4@4
+  displayName: 'Terraform > Plan'
+  inputs:
+    command: 'plan'
+    provider: 'azurerm'
+    workingDirectory: '${{ parameters.workingDirectory }}'
+    environmentServiceNameAzureRM: '${{ parameters.serviceConnectionName }}'
+
+- task: TerraformTaskV4@4
+  displayName: 'Terraform > Apply'
+  condition: and(not(or(failed(), canceled())), eq('${{ parameters.branchType }}', 'main'))
+  inputs:
+    command: 'apply'
+    provider: 'azurerm'
+    workingDirectory: '${{ parameters.workingDirectory }}'
+    environmentServiceNameAzureRM: '${{ parameters.serviceConnectionName }}'
+    commandOptions: '-auto-approve'
+
