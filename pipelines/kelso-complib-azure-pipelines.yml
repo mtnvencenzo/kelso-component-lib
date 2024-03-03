@@ -233,7 +233,7 @@ stages:
         displayName: 'Publish files to blob storage'
         condition: and(not(or(failed(), canceled())), eq('${{ variables.branchType }}', 'main'))
         inputs:
-          azureSubscription: ''
+          azureSubscription: '$(serviceConnectionName)'
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
