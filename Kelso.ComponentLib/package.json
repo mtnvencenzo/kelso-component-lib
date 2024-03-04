@@ -2,6 +2,7 @@
     "name": "kelso-component-library",
     "private": false,
     "version": "1.0.0",
+    "license": "MIT",
     "type": "module",
     "scripts": {
         "loc": "vite",
