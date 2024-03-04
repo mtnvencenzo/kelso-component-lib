@@ -1,9 +1,12 @@
-import LoadingSkeleton, { LoadingSkeletonProps } from "./atoms/LoadingSkeleton/LoadingSkeleton";
+import LoadingSkeleton, { LoadingSkeletonProps } from './atoms/LoadingSkeleton/LoadingSkeleton';
+import IconButton, { IconButtonProps } from './atoms/IconButton/IconButton'; 
 
 export {
-    LoadingSkeleton
+    LoadingSkeleton,
+    IconButton
 }
 
 export type {
-    LoadingSkeletonProps
+    LoadingSkeletonProps,
+    IconButtonProps
 }
