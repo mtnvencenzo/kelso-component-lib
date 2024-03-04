@@ -225,7 +225,6 @@ stages:
 
       steps:
       - download: current  # refers to artifacts published by current pipeline
-        # condition: and(not(or(failed(), canceled())), eq('${{ parameters.branchType }}', 'main'))
         artifact: kelso-component-library
         displayName: Download build artifact
 
@@ -243,5 +242,20 @@ stages:
               --source '$(Pipeline.Workspace)/kelso-component-library/storybook-static' \
               --overwrite \
               --pattern '*'
+
+      - task: AzureCli@2
+        displayName: 'Purge Cdn Cache'
+        condition: and(not(or(failed(), canceled())), eq('${{ variables.branchType }}', 'main'))
+        inputs:
+          azureSubscription: '$(serviceConnectionName)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az cdn endpoint purge \
+              --resource-group '' \
+              --profile-name 'cdnp-vec-eus-glo-kelso-001' \
+              --name 'cdn-vec-eus-glo-shared-001' \
+              --content-paths '/*' \
+              --no-wait
           
 
