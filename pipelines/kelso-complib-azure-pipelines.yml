@@ -252,7 +252,7 @@ stages:
           scriptLocation: 'inlineScript'
           inlineScript: |
             az cdn endpoint purge \
-              --resource-group '' \
+              --resource-group 'rg-vec-eus-glo-shared-001' \
               --profile-name 'cdnp-vec-eus-glo-kelso-001' \
               --name 'cdn-vec-eus-glo-shared-001' \
               --content-paths '/*' \
