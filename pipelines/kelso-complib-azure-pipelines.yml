@@ -253,8 +253,8 @@ stages:
           inlineScript: |
             az cdn endpoint purge \
               --resource-group 'rg-vec-eus-glo-shared-001' \
-              --profile-name 'cdnp-vec-eus-glo-kelso-001' \
-              --name 'cdn-vec-eus-glo-shared-001' \
+              --profile-name 'cdn-vec-eus-glo-shared-001' \
+              --name 'cdnp-vec-eus-glo-kelso-001' \
               --content-paths '/*' \
               --no-wait
           
