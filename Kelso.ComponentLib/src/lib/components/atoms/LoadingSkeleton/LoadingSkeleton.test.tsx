@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import { LoadingSkeleton } from '../src/lib/components/atoms/LoadingSkeleton';
+import { LoadingSkeleton } from '.';
 
 describe('Loading Skeleton', () => {
     test('renders loading skeleton with no props and default rows', () => {
