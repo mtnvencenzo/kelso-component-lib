@@ -1,17 +1,17 @@
 import { describe, expect, test } from "vitest";
-import ErrorBoundry from "./ErrorBoundry";
+import ErrorBoundary from "./ErrorBoundary";
 import { render, screen } from '@testing-library/react';
 
 const ProblemComponent = () => {
     throw new Error('Bad component');
 }
 
-describe('ErrorBoundry', () => {
+describe('ErrorBoundary', () => {
     test('should render default error message', async () => {
         render(
-            <ErrorBoundry>
+            <ErrorBoundary>
                 <ProblemComponent />
-            </ErrorBoundry>
+            </ErrorBoundary>
         );
 
         const element = await screen.findAllByText('An unknown error occurred.');
@@ -20,9 +20,9 @@ describe('ErrorBoundry', () => {
 
     test('should render fallback ui', async () => {
         render(
-            <ErrorBoundry fallbackUi={<div><p>This is my fallback</p></div>}>
+            <ErrorBoundary fallbackUi={<div><p>This is my fallback</p></div>}>
                 <ProblemComponent />
-            </ErrorBoundry>
+            </ErrorBoundary>
         );
 
         const element = await screen.findAllByText('This is my fallback');
@@ -31,9 +31,9 @@ describe('ErrorBoundry', () => {
 
     test('should render childen when no error', async () => {
         render(
-            <ErrorBoundry>
+            <ErrorBoundary>
                 <p>No error here</p>
-            </ErrorBoundry>
+            </ErrorBoundary>
         );
 
         const element = await screen.findAllByText('No error here');

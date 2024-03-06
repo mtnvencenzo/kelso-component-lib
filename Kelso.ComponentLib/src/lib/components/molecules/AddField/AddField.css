@@ -1,0 +1,4 @@
+#fieldContainer > div > input {
+    overflow-x: hidden !important;
+    max-width: calc(100% - 80px);
+}
