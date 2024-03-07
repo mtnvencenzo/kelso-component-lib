@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import AutoCompleteTextField from 'src/lib/components/molecules/AutoCompleteTextField/AutoCompleteTextField';
 
-const meta: Meta<typeof AutoCompleteTextField> = {
+const meta = {
     title: 'Components/Molecules/AutoCompleteTextField',
     component: AutoCompleteTextField,
     tags: ['autodocs']

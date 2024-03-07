@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import AddField from 'src/lib/components/molecules/AddField/AddField';
 
-const meta: Meta<typeof AddField> = {
+const meta = {
     title: 'Components/Molecules/AddField',
     component: AddField,
     tags: ['autodocs'],

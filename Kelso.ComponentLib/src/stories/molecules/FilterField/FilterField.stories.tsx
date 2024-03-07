@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import FilterField from 'src/lib/components/molecules/FilterField/FilterField';
 
-const meta: Meta<typeof FilterField> = {
+const meta = {
     title: 'Components/Molecules/FilterField',
     component: FilterField,
     tags: ['autodocs'],
