@@ -1,0 +1,81 @@
+.header-navbar {
+    max-height: 56px;
+    display: flex;
+    border: 2px solid #efefef;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.logo {
+    height: 56px;
+    margin-right: 12px;
+    vertical-align: middle;
+    border-right: 2px solid #f4f4f4;
+    padding-right: 12px;
+}
+
+.appTitle {
+    height: 100%;
+    font-family: 'Inter';
+    font-size: 24px;
+    font-weight: 600;
+    color: #333333;
+    display: flex;
+}
+
+.header-navbar,
+.logo,
+.appTitle {
+    background-color: white;
+    align-items: center;
+}
+
+.nav-header {
+    background-color: white;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 16px;
+    padding: 0 8px 8px 32px;
+}
+
+.nav-header ul {
+    background-color: white;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-header li {
+    background-color: white;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-header a {
+    font-family: 'Inter';
+    font-size: 20px;
+    background-color: white;
+    color: #4d555b;
+    text-decoration: none;
+    text-underline-offset: 8px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 5px 8px 5px 8px;
+    border-bottom: 1rem;
+    border-color: #4d555b;
+}
+
+.nav-header a:hover {
+    background-color: #f4f4f4;
+    border-radius: 10px;
+}
+
+.nav-header a.active {
+    color: black;
+    background-color: #e6e6e6;
+    border-radius: 10px;
+}

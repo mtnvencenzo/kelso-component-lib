@@ -5,5 +5,6 @@ import * as RouterTab from './RouterTab';
 import * as NavButton from './NavButton';
 import * as ThreeDotMenu from './ThreeDotMenu';
 import * as SectionBox from './SectionBox';
+import * as Button from './Button';
 
-export { LoadingSkeleton, IconButton, FieldContainer, RouterTab, NavButton, ThreeDotMenu, SectionBox };
+export { LoadingSkeleton, IconButton, FieldContainer, RouterTab, NavButton, ThreeDotMenu, SectionBox, Button };

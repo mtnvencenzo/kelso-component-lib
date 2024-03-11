@@ -1,5 +1,5 @@
 import './Header.css';
-import genericLogo1 from './generic-logo-1.png';
+import genericLogo1 from '../../../assets/generic-logo-1.png';
 
 interface HeaderProps {
     testId?: string;

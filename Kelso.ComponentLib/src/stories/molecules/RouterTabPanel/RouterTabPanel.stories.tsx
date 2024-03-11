@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 const props = {
     tabsList: [
-        { to: '/', label: '' },
+        { to: '/', label: 'Tab 1' },
         { to: 'Tab2', label: 'Tab 2' },
         { to: 'Tab3', label: 'Tab 3' },
         { to: 'Tab4', label: 'Tab 4' }

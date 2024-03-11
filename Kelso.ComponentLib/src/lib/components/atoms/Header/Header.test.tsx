@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import { screen, render } from '@testing-library/react';
 import Header from './Header';
-import genericLogo1 from './generic-logo-1.png';
+import genericLogo1 from '../../../assets/generic-logo-1.png';
 import genericLogo2 from './generic-logo-2.png';
 
 const appTitle = 'My App Title';
