@@ -14,6 +14,7 @@ import PageHeader, { PageHeaderProps } from './molecules/PageHeader/PageHeader';
 import HeaderNavBar, { HeaderNavBarProps } from './organisms/HeaderNavBar/HeaderNavBar';
 import ButtonList, { ButtonListDataProps, ButtonListProps } from './organisms/ButtonList/ButtonList';
 import FilterableTable, { FilterableTableRow, FilterableTableProps } from './organisms/FilterableTable/FilterableTable';
+import NavigableTable, { NavigableTableRow, NavigableTableProps } from './organisms/NavigableTable/NavigableTable';
 import Button, { ButtonProps } from './atoms/Button/Button';
 
 export {
@@ -33,7 +34,8 @@ export {
     HeaderNavBar,
     ButtonList,
     FilterableTable,
-    Button
+    Button,
+    NavigableTable
 }
 
 export type {
@@ -55,5 +57,7 @@ export type {
     ButtonListProps,
     FilterableTableRow,
     FilterableTableProps,
-    ButtonProps
+    ButtonProps,
+    NavigableTableRow,
+    NavigableTableProps
 }

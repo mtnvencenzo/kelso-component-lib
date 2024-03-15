@@ -13,7 +13,7 @@
         "build-storybook-docs": "storybook build --docs",
         "test": "vitest",
         "pre-ins": "rm -rf node_modules",
-        "ins": "yarn install --immutable --immutable-cache --check-cache"
+        "ins": "yarn install --immutable --immutable-cache --check-cache --network-timeout 100000"
     },
     "files": [
         "dist/**"
