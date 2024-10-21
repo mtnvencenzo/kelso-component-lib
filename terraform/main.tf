@@ -5,7 +5,7 @@ terraform {
   required_providers {
     azurerm = {
       source = "hashicorp/azurerm"
-      version = "3.77.0"
+      version = "=3.116.0"
     }
   }
 
@@ -14,6 +14,8 @@ terraform {
 
 provider "azurerm" {
   features {}
+  
+  skip_provider_registration = true
 }
 
 data "azurerm_resource_group" "kelso_global_storybook_resource_group" {
