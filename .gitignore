@@ -58,7 +58,8 @@ node_modules/
 # Build
 /**/dist/**/*
 
+/**/*/.terraform
+/**/*/.terraform.lock.hcl
 
-
-storybook-static/
-
+/**/.coverage
+/**/TestResults/

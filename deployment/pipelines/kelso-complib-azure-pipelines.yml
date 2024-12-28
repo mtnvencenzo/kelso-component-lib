@@ -1,0 +1,284 @@
+variables:
+  serviceConnectionName: 'sc-vec-eus-default-svc-principal-001'
+  terraformStateResourceGroup: 'rg-vec-eus-administration-001'
+  terraformStateStorageAccount: 'stveceusterraformstat001'
+  ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    branchType: main
+  ${{ if ne(variables['Build.SourceBranchName'], 'main') }}: 
+    branchType: pull
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - kelso.component.lib/*
+    - deployment/*
+
+resources:
+  - repo: self
+  
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: Build
+    displayName: 'Build and test'
+    jobs:
+    - job: BuildComponantLib
+      displayName: 'Build and test ui'
+
+      pool:
+        vmImage: windows-latest
+
+      steps:
+      - task: NodeTool@0
+        displayName: 'Install node'
+        inputs:
+          versionSpec: '23.5.x'
+
+      - task: PowerShell@2
+        displayName: 'Bump package version'
+        inputs:
+          targetType: 'inline'
+          script: |
+            $filePath = "$(Build.sourcesdirectory)\kelso.component.lib\package.json"
+            $Jsonfile = Get-Content $filePath | ConvertFrom-Json
+            $version = $Jsonfile.version
+
+            echo $version
+
+            $major,$minor,$build = $version.Split('.')
+
+            $build = "$(build.buildnumber)"
+
+            $bumpedVersion = $major,$minor,$build -join('.')
+
+            echo $bumpedVersion
+
+            Write-Host "##vso[task.setvariable variable=version]$bumpedVersion"
+      
+      - task: Npm@1
+        displayName: 'Npm custom version'
+        inputs:
+          command: 'custom'
+          workingDir: '$(System.DefaultWorkingDirectory)/kelso.component.lib'
+          customCommand: 'version $(version) --no-git-tag-version'
+          verbose: true
+
+      - script: |
+          npm install -g yarn
+        displayName: 'Install yarn'
+
+      - task: DeleteFiles@1
+        inputs:
+          displayName: 'Delete yarn lock'
+          SourceFolder: '$(System.DefaultWorkingDirectory)/kelso.component.lib'
+          Contents: yarn.lock
+
+      - script: |
+          yarn pre-ins
+        displayName: 'Pre-install dependencies'
+        workingDirectory: $(System.DefaultWorkingDirectory)/kelso.component.lib
+        
+      - script: |
+          yarn ins
+        displayName: 'Install dependencies'
+        workingDirectory: $(System.DefaultWorkingDirectory)/kelso.component.lib
+
+      - script: |
+          yarn lint
+        displayName: 'UI run lint'
+        workingDirectory: $(System.DefaultWorkingDirectory)/kelso.component.lib
+
+      - script: |
+          yarn coverage
+        displayName: 'UI run tests with coverage'
+        workingDirectory: $(System.DefaultWorkingDirectory)/kelso.component.lib
+
+      - task: PublishTestResults@2
+        displayName: 'Publish ui unit test results'
+        condition: succeededOrFailed()
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '$(System.DefaultWorkingDirectory)/.coverage/junit-report.xml'
+          mergeTestResults: True
+          failTaskOnFailedTests: True
+          testRunTitle: 'Kelso.Component.Lib'
+
+      - task: reportgenerator@5
+        displayName: 'Generate Code Coverage'
+        inputs:
+          reports: '$(System.DefaultWorkingDirectory)/.coverage/cobertura-coverage.xml'
+          targetdir: '$(System.DefaultWorkingDirectory)/.coverage/code-coverage-reports'
+          reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
+          publishCodeCoverageResults: false
+          fileFilters: '+*;-*.stories.tsx'
+
+      - task: PublishCodeCoverageResults@1
+        displayName: 'Publish Code Coverage'
+        inputs:
+          codeCoverageTool: 'Cobertura'
+          summaryFileLocation: '$(System.DefaultWorkingDirectory)/.coverage/code-coverage-reports/Cobertura.xml'
+          reportDirectory: '$(System.DefaultWorkingDirectory)/.coverage/code-coverage-reports'
+        env:
+          DISABLE_COVERAGE_AUTOGENERATE: 'true'
+
+      - script: |
+          yarn build:prod
+        displayName: 'UI build library and static app'
+        workingDirectory: $(System.DefaultWorkingDirectory)/kelso.component.lib
+
+      - task: CopyFiles@2
+        displayName: 'UI copy component library build artifacts'
+        inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)/kelso.component.lib/dist'
+          Contents: '**/*'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/artifacts/dist'
+          OverWrite: true
+
+      - task: CopyFiles@2
+        displayName: 'UI copy .npmrc file'
+        inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)/kelso.component.lib'
+          Contents: '.npmrc'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/artifacts/'
+          OverWrite: true
+
+      - task: CopyFiles@2
+        displayName: 'UI copy package.json'
+        inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)/kelso.component.lib'
+          Contents: 'package.json'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/artifacts/'
+          OverWrite: true
+
+      - script: |
+          yarn build-storybook-docs
+        displayName: 'UI build storybook-docs'
+        workingDirectory: $(System.DefaultWorkingDirectory)/kelso.component.lib
+
+      - task: CopyFiles@2
+        displayName: 'UI copy storybook build artifacts'
+        inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)/kelso.component.lib/storybook-static'
+          Contents: '**'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/artifacts/storybook-static'
+          OverWrite: true
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'UI publish artifacts'
+        condition: and(not(or(failed(), canceled())), eq('${{ variables.branchType }}', 'main'))
+        inputs:
+          PathToPublish: '$(Build.ArtifactStagingDirectory)/artifacts'
+          ArtifactName: 'kelso-component-library'
+          PublishLocation: 'Container'
+
+  - stage: PublishLib
+    displayName: 'Publish component lib to npm repo (azure artifacts)'
+    condition: and(not(or(failed(), canceled())), eq('${{ variables.branchType }}', 'main'))
+    dependsOn: Build
+    jobs:
+    - job: Publish
+      displayName: 'Publish component lib to npm repo (azure artifacts)'
+
+      pool:
+        vmImage: ubuntu-latest
+
+      steps:
+      - download: current  # refers to artifacts published by current pipeline
+        artifact: kelso-component-library
+        displayName: Download build artifact
+
+      - task: NpmAuthenticate@0
+        displayName: 'Authenticate with azure artifacts'
+        inputs:
+          workingFile: '$(Pipeline.Workspace)/kelso-component-library/.npmrc'
+
+      - task: Npm@1
+        displayName: 'Publish component library to artifacts'
+        condition: and(not(or(failed(), canceled())), eq('${{ variables.branchType }}', 'main'))
+        inputs:
+          command: 'publish'
+          workingDir: '$(Pipeline.Workspace)/kelso-component-library'
+          verbose: true
+          publishRegistry: 'useFeed'
+          publishFeed: 'global'
+          publishConfig: 'package.json'
+
+  - stage: Terraform
+    displayName: 'Terraform'
+    dependsOn: Build
+    jobs:
+    - deployment: Terraform
+      displayName: 'Terraform plan and apply'
+      environment: dev
+      timeoutInMinutes: 360
+
+      pool:
+        vmImage: ubuntu-latest
+
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - template: terraform-plan-and-apply.yml
+              parameters:
+                env: dev
+                tag: $(tag)
+                branchType: ${{ variables.branchType }}
+                workingDirectory: '$(System.DefaultWorkingDirectory)/deployment/terraform'
+                serviceConnectionName: '$(serviceConnectionName)'
+                terraformStateResourceGroup: '$(terraformStateResourceGroup)'
+                terraformStateStorageAccount: '$(terraformStateStorageAccount)'
+                terraformStateContainerName: 'terraform-kelso'
+                terraformStateBlobKey: 'shared/terraform.tfstate'
+          
+  - stage: PublishStorybook
+    displayName: 'Publish storybook docs web files to storage account'
+    condition: and(not(or(failed(), canceled())), eq('${{ variables.branchType }}', 'main'))
+    dependsOn: Terraform
+    jobs:
+    - job: Publish
+      displayName: 'Publish storybook docs web files to storage account'
+
+      pool:
+        vmImage: ubuntu-latest
+
+      steps:
+      - download: current  # refers to artifacts published by current pipeline
+        artifact: kelso-component-library
+        displayName: Download build artifact
+
+      - task: AzureCli@2
+        displayName: 'Publish files to blob storage'
+        condition: and(not(or(failed(), canceled())), eq('${{ variables.branchType }}', 'main'))
+        inputs:
+          azureSubscription: '$(serviceConnectionName)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az storage blob upload-batch \
+              --account-name 'stvecglokelsocmplib001' \
+              --destination '$web' \
+              --source '$(Pipeline.Workspace)/kelso-component-library/storybook-static' \
+              --overwrite \
+              --pattern '*'
+
+      - task: AzureCli@2
+        displayName: 'Purge Cdn Cache'
+        condition: and(not(or(failed(), canceled())), eq('${{ variables.branchType }}', 'main'))
+        inputs:
+          azureSubscription: '$(serviceConnectionName)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az cdn endpoint purge \
+              --resource-group 'rg-vec-eus-glo-shared-001' \
+              --profile-name 'cdn-vec-eus-glo-shared-001' \
+              --name 'cdnp-vec-eus-glo-kelso-001' \
+              --content-paths '/*' \
+              --no-wait
+          
+
