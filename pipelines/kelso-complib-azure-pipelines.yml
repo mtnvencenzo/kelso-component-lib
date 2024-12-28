@@ -76,11 +76,6 @@ stages:
           SourceFolder: '$(System.DefaultWorkingDirectory)/Kelso.ComponentLib'
           Contents: yarn.lock
 
-      # - script: |
-      #     yarn install
-      #   displayName: 'Install dependencies'
-      #   workingDirectory: $(System.DefaultWorkingDirectory)/Kelso.ComponentLib
-
       - script: |
           yarn pre-ins
         displayName: 'Pre-install dependencies'
@@ -164,7 +159,6 @@ stages:
 
       steps:
       - download: current  # refers to artifacts published by current pipeline
-        # condition: and(not(or(failed(), canceled())), eq('${{ parameters.branchType }}', 'main'))
         artifact: kelso-component-library
         displayName: Download build artifact
 
