@@ -26,7 +26,8 @@ data "azurerm_resource_group" "global_shared_resource_group" {
   name     = "rg-${var.sub}-${var.region}-${var.environment}-shared-${var.sequence}"
 }
 
-data "azurerm_cdn_profile" "global_shared_cdn" {
-  name     = "cdn-${var.sub}-${var.region}-${var.environment}-shared-${var.sequence}"
+
+data "azurerm_cdn_frontdoor_profile" "global_shared_cdn" {
+  name     = "afd-${var.sub}-${var.region}-${var.environment}-shared-${var.sequence}"
   resource_group_name = data.azurerm_resource_group.global_shared_resource_group.name
 }

@@ -274,11 +274,12 @@ stages:
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
-            az cdn endpoint purge \
+            az afd endpoint purge \
               --resource-group 'rg-vec-eus-glo-shared-001' \
-              --profile-name 'cdn-vec-eus-glo-shared-001' \
-              --name 'cdnp-vec-eus-glo-kelso-001' \
+              --profile-name 'afd-vec-eus-glo-shared-001' \
+              --endpoint-name 'afde-vec-eus-glo-kelso-001' \
+              --domains 'stvecglokelsocmplib001.z13.web.core.windows.net'
               --content-paths '/*' \
-              --no-wait
+              --no-wait true
           
 
