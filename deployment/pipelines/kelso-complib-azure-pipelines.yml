@@ -278,7 +278,7 @@ stages:
               --resource-group 'rg-vec-eus-glo-shared-001' \
               --profile-name 'afd-vec-eus-glo-shared-001' \
               --endpoint-name 'afde-vec-eus-glo-kelso-001' \
-              --domains 'stvecglokelsocmplib001.z13.web.core.windows.net'
+              --domains 'stvecglokelsocmplib001.z13.web.core.windows.net' \
               --content-paths '/*' \
               --no-wait true
           
