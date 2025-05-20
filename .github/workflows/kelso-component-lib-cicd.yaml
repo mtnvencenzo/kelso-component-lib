@@ -59,9 +59,7 @@ jobs:
           echo "Fetching package versions..."
           API_RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/user/packages/npm/kelso-component-library/versions")
-          echo "Raw API Response:"
-          echo "$API_RESPONSE"
-          
+
           if [[ "$API_RESPONSE" == *"Package not found"* ]] || [ "$API_RESPONSE" = "[]" ] || [ -z "$API_RESPONSE" ]; then
             echo "No published versions found, using current package.json version"
             CURRENT_VERSION=$(jq -r '.version' package.json)
