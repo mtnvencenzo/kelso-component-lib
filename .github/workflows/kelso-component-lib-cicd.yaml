@@ -23,68 +23,14 @@ jobs:
       use_npm_auth: false
 
   publish:
-    name: Publish liibrary
-    needs: build
-    if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main' }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: kelso-component-library
-          path: kelso.component.lib
-          
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '23.5.x'
-          registry-url: 'https://npm.pkg.github.com/mtnvencenzo'
-          
-      - name: Install yarn
-        run: npm install -g yarn
-
-      - name: Install
-        working-directory: 'kelso.component.lib'
-        run: yarn install --frozen-lockfile
-
-      - name: Get latest version
-        id: get_version
-        working-directory: 'kelso.component.lib'
-        run: |
-          echo "Fetching package versions..."
-          API_RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/user/packages/npm/kelso-component-library/versions")
-
-          if [[ "$API_RESPONSE" == *"Package not found"* ]] || [ "$API_RESPONSE" = "[]" ] || [ -z "$API_RESPONSE" ]; then
-            echo "No published versions found, using current package.json version"
-            CURRENT_VERSION=$(jq -r '.version' package.json)
-            echo "Current version from package.json: $CURRENT_VERSION"
-            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-          else
-            LATEST_VERSION=$(echo "$API_RESPONSE" | jq -r '.[0].name // "1.0.0"')
-            echo "Found latest version: $LATEST_VERSION"
-            echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Increment package version
-        working-directory: 'kelso.component.lib'
-        run: |
-          CURRENT_VERSION=${{ steps.get_version.outputs.version }}
-          IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
-          NEW_VERSION="$major.$minor.$((patch + 1))"
-          echo "Incrementing version from $CURRENT_VERSION to $NEW_VERSION"
-          yarn version --new-version $NEW_VERSION --no-git-tag-version
-          
-      - name: Publish to GitHub Packages
-        working-directory: 'kelso.component.lib'
-        run: yarn publish --non-interactive
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    name: Publish library
+    uses: mtnvencenzo/Workflows/.github/workflows/npm-package-publish.yaml@main
+    needs: [build]
+    with:
+      node_version: '23.5.x'
+      artifact_name: 'kelso-component-library'
+      npm_scope: '@mtnvencenzo'
+      package_name: 'kelso-component-library'
 
   terraform_deploy:
     name: Terraform deploy prd
