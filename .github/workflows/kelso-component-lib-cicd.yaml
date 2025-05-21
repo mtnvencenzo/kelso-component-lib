@@ -25,11 +25,10 @@ jobs:
   publish:
     name: Publish library
     uses: mtnvencenzo/Workflows/.github/workflows/npm-package-publish.yaml@main
-    needs: [build]
     with:
       node_version: '23.5.x'
       artifact_name: 'kelso-component-library'
-      npm_scope: '@mtnvencenzo'
+      npm_scope: 'mtnvencenzo' # no pund sign
       package_name: 'kelso-component-library'
 
   terraform_deploy:
