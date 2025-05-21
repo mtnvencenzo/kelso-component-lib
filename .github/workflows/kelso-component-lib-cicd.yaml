@@ -56,11 +56,20 @@ jobs:
         id: get_version
         working-directory: 'kelso.component.lib'
         run: |
-          LATEST_VERSION=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/mtnvencenzo/Kelso/packages/npm/@mtnvencenzo%2Fkelso-component-library/versions" \
-            | jq -r '.[0].name // "1.0.0"')
-          echo "Found latest version: $LATEST_VERSION"
-          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          echo "Fetching package versions..."
+          API_RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/mtnvencenzo/Kelso/packages/npm/@mtnvencenzo%2Fkelso-component-library/versions")
+          echo "Raw API Response:"
+          echo "$API_RESPONSE"
+          
+          if [ "$API_RESPONSE" = "[]" ] || [ -z "$API_RESPONSE" ]; then
+            echo "No versions found, starting with 1.0.0"
+            echo "version=1.0.0" >> $GITHUB_OUTPUT
+          else
+            LATEST_VERSION=$(echo "$API_RESPONSE" | jq -r '.[0].name // "1.0.0"')
+            echo "Found latest version: $LATEST_VERSION"
+            echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          fi
 
       - name: Increment package version
         working-directory: 'kelso.component.lib'
