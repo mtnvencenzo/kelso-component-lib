@@ -58,13 +58,15 @@ jobs:
         run: |
           echo "Fetching package versions..."
           API_RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/user/packages/npm/@mtnvencenzo%2Fkelso-component-library/versions")
+            "https://api.github.com/user/packages/npm/kelso-component-library/versions")
           echo "Raw API Response:"
           echo "$API_RESPONSE"
           
-          if [ "$API_RESPONSE" = "[]" ] || [ -z "$API_RESPONSE" ]; then
-            echo "No versions found, starting with 1.0.0"
-            echo "version=1.0.0" >> $GITHUB_OUTPUT
+          if [[ "$API_RESPONSE" == *"Package not found"* ]] || [ "$API_RESPONSE" = "[]" ] || [ -z "$API_RESPONSE" ]; then
+            echo "No published versions found, using current package.json version"
+            CURRENT_VERSION=$(jq -r '.version' package.json)
+            echo "Current version from package.json: $CURRENT_VERSION"
+            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           else
             LATEST_VERSION=$(echo "$API_RESPONSE" | jq -r '.[0].name // "1.0.0"')
             echo "Found latest version: $LATEST_VERSION"
