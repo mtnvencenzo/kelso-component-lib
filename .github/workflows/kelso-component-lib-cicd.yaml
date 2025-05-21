@@ -51,9 +51,17 @@ jobs:
       - name: Install
         working-directory: 'kelso.component.lib'
         run: yarn install --frozen-lockfile
-        
+
+      - name: Increment package version
+        working-directory: 'kelso.component.lib'
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          yarn version --patch --no-git-tag-version
+          
       - name: Publish to GitHub Packages
-        run: cd kelso.component.lib && npm publish
+        working-directory: 'kelso.component.lib'
+        run: yarn publish --non-interactive
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
