@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "Fetching package versions..."
           API_RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/mtnvencenzo/Kelso/packages/npm/@mtnvencenzo%2Fkelso-component-library/versions")
+            "https://api.github.com/user/packages/npm/@mtnvencenzo%2Fkelso-component-library/versions")
           echo "Raw API Response:"
           echo "$API_RESPONSE"
           
