@@ -45,8 +45,12 @@ jobs:
           node-version: '23.5.x'
           registry-url: 'https://npm.pkg.github.com/mtnvencenzo'
           
-      - name: Install dependencies
-        run: cd kelso.component.lib && npm ci
+      - name: Install yarn
+        run: npm install -g yarn
+
+      - name: Install
+        working-directory: 'kelso.component.lib'
+        run: yarn install --frozen-lockfile
         
       - name: Publish to GitHub Packages
         run: cd kelso.component.lib && npm publish
