@@ -58,14 +58,9 @@ jobs:
         run: |
           LATEST_VERSION=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/users/mtnvencenzo/packages/npm/@mtnvencenzo%2Fkelso-component-library/versions" \
-            | jq -r '.[0].name')
-          if [ "$LATEST_VERSION" = "null" ] || [ -z "$LATEST_VERSION" ]; then
-            echo "No previous version found, starting with 1.0.0"
-            echo "version=1.0.0" >> $GITHUB_OUTPUT
-          else
-            echo "Found latest version: $LATEST_VERSION"
-            echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
-          fi
+            | jq -r 'sort_by(.created_at) | reverse | .[0].name // "1.0.0"')
+          echo "Found latest version: $LATEST_VERSION"
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
 
       - name: Increment package version
         working-directory: 'kelso.component.lib'
