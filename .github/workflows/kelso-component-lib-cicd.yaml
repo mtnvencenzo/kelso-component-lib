@@ -22,6 +22,37 @@ jobs:
       artifact_name: 'kelso-component-library'
       use_npm_auth: false
 
+  publish:
+    name: Publish to GitHub Packages
+    needs: build
+    if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: kelso-component-library
+          path: kelso.component.lib
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23.5.x'
+          registry-url: 'https://npm.pkg.github.com/mtnvencenzo'
+          
+      - name: Install dependencies
+        run: cd kelso.component.lib && npm ci
+        
+      - name: Publish to GitHub Packages
+        run: cd kelso.component.lib && npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   terraform_deploy:
     name: Terraform deploy prd
     uses: mtnvencenzo/Workflows/.github/workflows/terraform-plan-and-apply.yaml@main
