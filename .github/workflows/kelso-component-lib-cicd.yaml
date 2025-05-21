@@ -1,0 +1,64 @@
+name: CICD-Kelso-Component-Library
+
+on:
+  pull_request:
+    branches: [main]
+    paths: [kelso.component.lib/**, .github/workflows/kelso-component-lib-cicd.yaml]
+  push:
+    branches: [main]
+    paths: [kelso.component.lib/**, .github/workflows/kelso-component-lib-cicd.yaml]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build app
+    uses: mtnvencenzo/Workflows/.github/workflows/ui-build.yaml@main
+    with:
+      working_directory: 'kelso.component.lib'
+      node_version: '23.5.x'
+      setup_files: '[".npmrc", "package.json"]' # Must be a string representation of a json array with items separated by ', '
+      upload_artifact: true
+      artifact_name: 'kelso-component-library'
+      use_npm_auth: false
+
+  terraform_deploy:
+    name: Terraform deploy prd
+    uses: mtnvencenzo/Workflows/.github/workflows/terraform-plan-and-apply.yaml@main
+    with:
+      working_directory: .deployment/iac/terraform
+      environment_name: prd
+      allow_deploy: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main' }}
+      terraform_version: 1.11.4
+      arm_client_id: ${{ vars.ARM_CLIENT_ID }}
+      arm_subscription_id: ${{ vars.ARM_SUBSCRIPTION_ID }}
+      arm_tenant_id: ${{ vars.ARM_TENANT_ID }}
+      backend_resource_group_name: rg-vec-eus-administration-001
+      backend_storage_account_name: stveceusterraformstat001
+      backend_container_name: terraform-kelso
+      backend_blob_key: shared/terraform.tfstate
+    secrets:
+      arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+      terraform_module_repo_access_key_secret: ${{ secrets.TERRAFORM_MODULE_REPO_ACCESS_KEY_SECRET }}
+
+  storybook:
+    name: Build storybook docs
+    uses: mtnvencenzo/Workflows/.github/workflows/ui-storybook-build-deploy.yaml@main
+    needs: [build, terraform_deploy]
+    with:
+      working_directory: 'kelso.component.lib'
+      environment_name: prd
+      allow_deploy: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main' }}
+      node_version: '23.5.x'
+      upload_artifact: true
+      artifact_name: 'storybook-docs'
+      arm_client_id: ${{ vars.ARM_CLIENT_ID }}
+      arm_subscription_id: ${{ vars.ARM_SUBSCRIPTION_ID }}
+      arm_tenant_id: ${{ vars.ARM_TENANT_ID }}
+      storage_account_name: stvecglokelsocmplib001
+      cdn_resource_group: rg-vec-eus-glo-shared-001
+      cdn_profile_name: afd-vec-eus-glo-shared-001
+      cdn_endpoint_name: afde-vec-eus-glo-kelso-001
+      cdn_domain_name: afde-vec-eus-glo-kelso-001-gjhnfkfng8ffg2a6.z02.azurefd.net
+    secrets:
+      arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}

@@ -4,12 +4,12 @@
 terraform {
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
+      source  = "hashicorp/azurerm"
       version = "=4.16.0"
     }
   }
 
-  backend "azurerm" { }
+  backend "azurerm" {}
 }
 
 provider "azurerm" {
@@ -17,15 +17,15 @@ provider "azurerm" {
 }
 
 data "azurerm_resource_group" "kelso_global_storybook_resource_group" {
-  name     = "rg-${var.sub}-${var.region}-${var.environment}-storybook-${var.sequence}"
+  name = "rg-${var.sub}-${var.region}-${var.environment}-storybook-${var.sequence}"
 }
 
 data "azurerm_resource_group" "global_shared_resource_group" {
-  name     = "rg-${var.sub}-${var.region}-${var.environment}-shared-${var.sequence}"
+  name = "rg-${var.sub}-${var.region}-${var.environment}-shared-${var.sequence}"
 }
 
 
 data "azurerm_cdn_frontdoor_profile" "global_shared_cdn" {
-  name     = "afd-${var.sub}-${var.region}-${var.environment}-shared-${var.sequence}"
+  name                = "afd-${var.sub}-${var.region}-${var.environment}-shared-${var.sequence}"
   resource_group_name = data.azurerm_resource_group.global_shared_resource_group.name
 }
