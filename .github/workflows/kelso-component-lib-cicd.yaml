@@ -1,4 +1,4 @@
-name: CICD-Kelso-Component-Library
+name: cicd-kelso-component-library
 
 on:
   pull_request:
