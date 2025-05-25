@@ -13,7 +13,7 @@ on:
 jobs:
   build:
     name: Build app
-    uses: mtnvencenzo/Workflows/.github/workflows/ui-build.yaml@main
+    uses: mtnvencenzo/workflows/.github/workflows/ui-build.yaml@main
     with:
       working_directory: 'kelso.component.lib'
       node_version: '23.5.x'
@@ -24,7 +24,7 @@ jobs:
 
   publish:
     name: Publish library
-    uses: mtnvencenzo/Workflows/.github/workflows/npm-package-publish.yaml@main
+    uses: mtnvencenzo/workflows/.github/workflows/npm-package-publish.yaml@main
     needs: [build]
     with:
       node_version: '23.5.x'
@@ -34,7 +34,7 @@ jobs:
 
   terraform_deploy:
     name: Terraform deploy prd
-    uses: mtnvencenzo/Workflows/.github/workflows/terraform-plan-and-apply.yaml@main
+    uses: mtnvencenzo/workflows/.github/workflows/terraform-plan-and-apply.yaml@main
     with:
       working_directory: .deployment/iac/terraform
       environment_name: prd
@@ -53,7 +53,7 @@ jobs:
 
   storybook:
     name: Build storybook docs
-    uses: mtnvencenzo/Workflows/.github/workflows/ui-storybook-build-deploy.yaml@main
+    uses: mtnvencenzo/workflows/.github/workflows/ui-storybook-build-deploy.yaml@main
     needs: [build, terraform_deploy]
     with:
       working_directory: 'kelso.component.lib'
