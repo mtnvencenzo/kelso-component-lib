@@ -62,8 +62,7 @@ const NavigableTable = ({
                 sx={{ maxWidth: '100%', marginTop: '9px', paddingTop: 'unset' }} >
                 <Grid container spacing={1} paddingX='0'>
                     <Grid
-                        item
-                        xs={12}
+                        size={{ xs: 12 }}
                         sx={{ paddingRight: '32px' }}>
                         <Grid
                             container
@@ -73,20 +72,19 @@ const NavigableTable = ({
                             alignItems='center'>
                             {headerElements?.map((element, index) => (
                                 <Grid
-                                    item
-                                    xs={'auto'}
+                                    size={{ xs: 'auto' }}
                                     sx={{ marginLeft: '8px', marginRight: '-8px' }}
                                     key={index}>
                                     {element}
                                 </Grid>
                             ))}
-                            <Grid item xs={4} sx={{ paddingRight: '16px' }}>
+                            <Grid size={{ xs: 4 }} sx={{ paddingRight: '16px' }}>
                                 <FilterField onFilter={filterRows} />
                             </Grid>
                         </Grid>
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                         <TableContainer sx={{ maxHeight: maxHeight }}>
                             <Table stickyHeader>
                                 <TableHead>

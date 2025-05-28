@@ -40,13 +40,13 @@ const PageHeader = ({ tabList, showSearch, showAlert, pageTitle, logo = genericL
         <Box sx={outerBoxStyle}>
             <Box sx={innerBoxStyle}>
                 <Grid container spacing={2} direction='row' alignItems='center'>
-                    <Grid item>
+                    <Grid>
                         <img src={logo} height={'64px'} aria-label={label} alt={label} />
                     </Grid>
-                    <Grid item sx={{ alignSelf: 'stretch'}}>
+                    <Grid sx={{ alignSelf: 'stretch'}}>
                         <Divider orientation='vertical' />
                     </Grid>
-                    <Grid item>
+                    <Grid>
                         <Typography
                             variant='body1'
                             arial-label={pageTitle}
@@ -56,7 +56,7 @@ const PageHeader = ({ tabList, showSearch, showAlert, pageTitle, logo = genericL
                         </Typography>
                     </Grid>
                     {tabList.map((tab) => (
-                        <Grid item key={tab.id}>
+                        <Grid key={tab.id}>
                             <NavButton {...tab} />
                         </Grid>
                     ))}
@@ -64,8 +64,8 @@ const PageHeader = ({ tabList, showSearch, showAlert, pageTitle, logo = genericL
             </Box>
             <Box sx={innerBoxStyle}>
                 <Grid container spacing={1} direction='row' alignItems='center'>
-                    {showSearch && <Grid item><img src={search} aria-label='Search' /></Grid>}
-                    {showAlert && <Grid item><img src={alert} aria-label='Alert' /></Grid>}
+                    {showSearch && <Grid><img src={search} aria-label='Search' /></Grid>}
+                    {showAlert && <Grid><img src={alert} aria-label='Alert' /></Grid>}
                 </Grid>
             </Box>
         </Box>

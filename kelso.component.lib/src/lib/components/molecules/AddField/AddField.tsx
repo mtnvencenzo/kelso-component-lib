@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { Typography, InputBase, Grid } from '@mui/material';
 import { ThemeOptions, ThemeProvider } from '@mui/material/styles';
 import IconButton from '../../atoms/IconButton';
@@ -68,7 +69,7 @@ const AddField = ({
                                 direction='row'
                                 justifyContent='flex-end'
                                 alignItems='center'>
-                                <Grid item xs={1}>
+                                <Grid size={{ xs: 1 }}>
                                     <Typography
                                         variant='caption'
                                         color='textSecondary'
@@ -80,7 +81,7 @@ const AddField = ({
                                         {`${localInputValue?.length ?? 0}/${maxLength}`}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={1}>
+                                <Grid size={{ xs: 1 }}>
                                     <IconButton
                                         handleClick={handleAddClick}
                                         icon={<AddIcon />}

@@ -28,7 +28,7 @@
         "declarationMap": true,
         "baseUrl": ".",
         "paths": {
-            "kelso-component-library": ["src/lib/index.ts"]
+            "kelso-component-library": ["src/lib/index.ts"],
         }
     },
     "typeRoots": ["node_modules/@types", "src/lib/index.d.ts"],

@@ -85,12 +85,12 @@ const ButtonList = ({
                     />
                 </ListItemButton>
                 <Grid container spacing={3} marginLeft='-20px'>
-                    <Grid item xs={3}>
+                    <Grid size={{ xs: 3 }}>
                         <FilterField onFilter={filterList} />
                     </Grid>
 
                     {showAddField && (
-                        <Grid item xs={3}>
+                        <Grid size={{ xs: 3 }}>
                             <AddField
                                 inputValue={addInputValue}
                                 onClick={addItemOnClick}
