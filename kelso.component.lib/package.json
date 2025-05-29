@@ -16,6 +16,9 @@
     "pre-ins": "rm -rf node_modules",
     "ins": "yarn install --immutable --immutable-cache --check-cache --network-timeout 100000"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "files": [
     "dist/**"
   ],
