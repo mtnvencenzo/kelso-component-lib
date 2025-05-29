@@ -1,10 +1,20 @@
-import { describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import ErrorBoundary from "./ErrorBoundary";
 import { render, screen } from '@testing-library/react';
+
+const originalConsoleError = console.error;
 
 const ProblemComponent = () => {
     throw new Error('Bad component');
 }
+
+beforeEach(() => {
+    console.error = () => {}; // Mock console.error
+});
+
+afterEach(() => {
+    console.error = originalConsoleError; // Restore console.error
+});
 
 describe('ErrorBoundary', () => {
     test('should render default error message', async () => {

@@ -73,14 +73,13 @@ const FilterableTable = ({
                 sx={{ maxWidth: '100%', marginTop: '9px', paddingTop: 'unset' }} >
                 <Grid container spacing={1}>
                     <Grid
-                        item
-                        xs={
+                        size={{ xs:
                             !showAdd && !headerElements
                                 ? 9
                                 : !showAdd || !headerElements
                                     ? 6
                                     : 3
-                        }>
+                        }}>
                         {tableTitle && (
                             <Grid
                                 container
@@ -88,8 +87,7 @@ const FilterableTable = ({
                                 justifyContent='flex-end'
                                 alignItems='center'>
                                 <Grid
-                                    item
-                                    xs={12}
+                                    size={{ xs: 12 }}
                                     sx={{ paddingLeft: '16px', paddingTop: '5px' }}>
                                     <Typography>{displayTitle}</Typography>
                                 </Grid>
@@ -98,21 +96,20 @@ const FilterableTable = ({
                     </Grid>
 
                     <Grid
-                        item
-                        xs={
+                        size={{ xs:
                             !showAdd && !headerElements
                                 ? 3
                                 : !showAdd || !headerElements
                                     ? 6
                                     : 9
-                        }>
+                        }}>
                         <Grid
                             container
                             direction='row'
                             justifyContent='flex-end'
                             alignItems='center'>
                             {headerElements && (
-                                <Grid item xs={!showAdd ? 6 : 4} sx={{ paddingRight: '16px' }}>
+                                <Grid size={{ xs: !showAdd ? 6 : 4 }} sx={{ paddingRight: '16px' }}>
                                     <Box display='flex' justifyContent='flex-end' width='100%'>
                                         {headerElements}
                                     </Box>
@@ -121,29 +118,27 @@ const FilterableTable = ({
 
                             {showAdd && addFieldProps && (
                                 <Grid
-                                    item
-                                    xs={!headerElements ? 6 : 4}
+                                    size={{ xs: !headerElements ? 6 : 4 }}
                                     sx={{ paddingRight: '16px' }}>
                                     <AddField {...addFieldProps} />
                                 </Grid>
                             )}
 
                             <Grid
-                                item
-                                xs={
+                                size={{ xs:
                                     !showAdd && !headerElements
                                         ? 12
                                         : !showAdd || !headerElements
                                             ? 6
                                             : 4
-                                }
+                                }}
                                 sx={{ paddingRight: '16px' }}>
                                 <FilterField onFilter={filterRows} />
                             </Grid>
                         </Grid>
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                         <TableContainer sx={{ maxHeight: maxHeight }}>
                             <Table stickyHeader>
                                 <TableHead>

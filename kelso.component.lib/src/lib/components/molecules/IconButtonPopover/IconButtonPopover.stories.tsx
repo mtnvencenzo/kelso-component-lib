@@ -25,7 +25,7 @@ const Wrapper: React.FC = () => {
     return (
         <Grid>
             <Grid container rowSpacing={1}>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                     <Typography variant='body1' color='textPrimary' display='inline'>
                         {'TINS'}:{' '}
                     </Typography>

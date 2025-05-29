@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import * as React from 'react';
+import { useState } from 'react';
 import { describe, test, expect } from 'vitest';
 import { render, screen, fireEvent } from "@testing-library/react";
 
@@ -26,7 +27,7 @@ const PopoverWrapper: React.FC = () => {
     return (
         <Grid>
             <Grid container rowSpacing={1}>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                     <Typography variant='body1' color='textPrimary' display='inline'>
                         {'TINS'}:{' '}
                     </Typography>

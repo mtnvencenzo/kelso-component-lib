@@ -14,7 +14,7 @@ trigger:
   paths:
     include:
     - kelso.component.lib/*
-    - .deployment/*
+    - .terraform/*
 
 resources:
   - repo: self
@@ -228,7 +228,7 @@ stages:
                 env: dev
                 tag: $(tag)
                 branchType: ${{ variables.branchType }}
-                workingDirectory: '$(System.DefaultWorkingDirectory)/.deployment/iac/terraform'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/.terraform'
                 serviceConnectionName: '$(serviceConnectionName)'
                 terraformStateResourceGroup: '$(terraformStateResourceGroup)'
                 terraformStateStorageAccount: '$(terraformStateStorageAccount)'

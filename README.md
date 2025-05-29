@@ -1,81 +1,115 @@
+# Kelso Component Library
 
-# Environment Setup
-- Install Visual Studio
-- Install VS Code
-- Install Chocolatey
-    - https://chocolatey.org/install
-- Install Terraform
-    - choco install terraform
-- Install Git
-    - Make sure core.autocrlf-true
-- Set Git Config
-``` shell
-    $ git config --global user.name "John Doe"
-    $ git config --global user.email "johndoe@mailinator.com"
+A modern React component library built with Material-UI, providing a comprehensive set of reusable components for building enterprise applications.
+
+
+  <a href="https://github.com/mtnvencenzo/kelso-component-lib/actions/workflows/kelso-component-lib-cicd.yaml"><img src="https://github.com/mtnvencenzo/kelso-component-lib/actions/workflows/kelso-component-lib-cicd.yaml/badge.svg" alt="Build Status"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+
+## Installation
+
+```bash
+npm install @mtnvencenzo/kelso-component-library
+# or
+yarn add @mtnvencenzo/kelso-component-library
 ```
-- Install nvm (https://github.com/nvm-sh/nvm#install--update-script)
-    - Create ``.bash_profile`` file in your home directory (Typcally `C:\Users\YourUserName`)
-    - Open Git Bash and run this line: 
-        - `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash`
-            - If you see an error about bash being not recognized, you may need to add `C:\Program Files\Git\bin` (or whatever your path is) to your emvironment variables.
-        - Once install is complete run this line to start using nvm
 
-        -   >export NVM_DIR="$HOME/.nvm"
-            >[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-            >[ -s "$NVM_DIR/bash_completion.sh" ] && \. "$NVM_DIR/bash_completion.sh"
+## Documentation
 
-        - Verify that nvm is installed by running this command:
-            - `nvm -v`
-        - Install Node
-            - Open Git Bash and run: `nvm install node # "node is an alias for the latest version"`
-        - Verify Installation: `node -v`
-        - Setup SSH key for Git (optional)
-            - https://learn.microsoft.com/en-us/azure/devops/repos/git/use-ssh-keys-to-authenticate?view=azure-devops
-        - Docker
-            - Make sure virtualization is enabled
-                - Task manager > Performance tab > You should see 'Virtualization: Enabled'
-            - Install WSL
-                - Open PowerShell or Windows Command Prompt in administrator mode and run: `wsl --install` (https://learn.microsoft.com/en-us/windows/wsl/install)
-                - Open windows features and enable:
-                    - Virtual Machine Platform
-                    - Windows Hypervisor Platform
-                    - Windows Subsystem for Linux
-                - From PowerShell enable WSL-1 by running the following command:
-                    - `dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart`
-                - Download the Linux Kernel installer from MS (https://learn.microsoft.com/en-us/windows/wsl/install-manual#step-4--download-the-linux-kernel-update-package)
-                - Run the Linux Kernel Installer
-                - From PowerShell set WSL version to 2:
-                    - `wsl --set-default-version 2`
-            - Download and run docker desktop for windows (https://docs.docker.com/desktop/install/windows-install/)
-            - Add docker-user to your non-admin login (only needed if having a separate admin account to install stuff)
-                - Open in PowerShell as admin
-                - Run this command:
-                    - `net localgroup docker-users "domain\YourUserName" /ADD`
-                - Restart your computer.
-            - If any UIs need to access Devops Artifacts for internal npm packages you need to setup `vsts-npm-auth`
-                -   > npm install -g vsts-npm-auth
-                    > vsts-npm-auth -config .npmrc
-                - Login prompt should open up and you should login with your credentials.
-            - Install Yarn:
-                - `npm install -g yarn`
-            - Install Azure CLI
-                - Can be done by command line or via an installer.
-                    - Installer can be found on the Azure CLI website: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli
-                - Alternately, Open PowerShell as an Admin and run this:
-                    - `$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; Remove-Item .\AzureCLI.msi`
-            - Install Azure Functions Core Tools
-                - `choco install azure-functions-core-tools -y`
-				- After install open Visual Studio and navigate to the Tools > Options > Projects and Solutions > Azure Functions option and click 'Check for updates'
+For detailed documentation and examples, visit our [Storybook](https://afde-vec-eus-glo-kelso-001-gjhnfkfng8ffg2a6.z02.azurefd.net/).
 
-- Git Bash Integration in Visual Studio
-  - Add Git Bash to Visual Studio Terminal
-    - Open the Tools > Options > Environment > Terminal Menu option and add a new terminal pointing to the git sh.exe cli
-      ![Adding](./.readme-assets/adding-git-bash-to-visualstudio-terminal.png)
-    - Then select the View > Terminal menu and pick your new Git Bash terminal.
-      ![Adding](./.readme-assets/using-git-bash-in-visualstudio-terminal.png)
+## Peer Dependencies
 
-  - Add Git Bash to Visual Studio External Tools
-    - Open the Tools > External Tools Menu option and add a new terminal pointing to the git git-bash.exe cli
-      ![Adding](./.readme-assets/adding-git-bash-to-visualstudio-external-tools.png)
+This library requires the following peer dependencies:
 
+```json
+{
+  "@mui/icons-material": "^7.1.0",
+  "@mui/material": "^7.1.0",
+  "react": "^19.1.0",
+  "react-dom": "^19.1.0",
+  "react-router-dom": "^7.6.0"
+}
+```
 
+## Available Components
+
+### Atoms
+- `Button` - A customizable button component
+- `IconButton` - A button with an icon
+- `LoadingSkeleton` - A loading placeholder component
+- `NavButton` - A navigation button component
+- `RouterTab` - A tab component for routing
+- `SectionBox` - A container component for sections
+- `ThreeDotMenu` - A menu component with three dots
+- `FieldContainer` - A container for form fields
+
+### Molecules
+- `AddField` - A component for adding new fields
+- `ErrorBoundary` - An error boundary component
+- `FilterField` - A component for filtering data
+- `IconButtonPopover` - A popover triggered by an icon button
+- `PageHeader` - A header component for pages
+- `RouterTabPanel` - A panel component for router tabs
+
+### Organisms
+- `ButtonList` - A list of buttons
+- `FilterableTable` - A table with filtering capabilities
+- `HeaderNavBar` - A navigation bar component
+- `NavigableTable` - A table with navigation capabilities
+
+## Usage
+
+```tsx
+import { Button, PageHeader, FilterableTable } from '@mtnvencenzo/kelso-component-library';
+
+function MyComponent() {
+  return (
+    <div>
+      <PageHeader title="My Page" />
+      <Button variant="contained">Click Me</Button>
+      <FilterableTable
+        columns={[
+          { field: 'name', headerName: 'Name' },
+          { field: 'age', headerName: 'Age' }
+        ]}
+        rows={[
+          { id: 1, name: 'John', age: 30 },
+          { id: 2, name: 'Jane', age: 25 }
+        ]}
+      />
+    </div>
+  );
+}
+```
+
+## Development
+
+### Prerequisites
+- Node.js
+- Yarn or npm
+
+### Setup
+1. Clone the repository
+2. Install dependencies:
+```bash
+yarn install
+# or
+npm install
+```
+
+### Available Scripts
+- `yarn loc` - Start development server
+- `yarn build:prod` - Build for production
+- `yarn lint` - Run ESLint
+- `yarn storybook` - Start Storybook
+- `yarn test` - Run tests
+- `yarn coverage` - Run tests with coverage
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For more information, visit our [GitHub Package](https://github.com/users/mtnvencenzo/packages/npm/package/kelso-component-library).
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
