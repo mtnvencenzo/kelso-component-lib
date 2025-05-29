@@ -32,7 +32,7 @@ jobs:
       npm_scope: 'mtnvencenzo' # no pund sign
       package_name: 'kelso-component-library'
     secrets:
-      github_packages_pat_token: ${{ secrets.GH_PACKAGES_PAT_TOKEN }}
+      github_packages_pat_token: ${{ secrets.GITHUB_TOKEN }}
 
   terraform_deploy:
     name: Terraform deploy prd

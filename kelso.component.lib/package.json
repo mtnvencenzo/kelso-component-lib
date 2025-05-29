@@ -1,7 +1,7 @@
 {
   "name": "@mtnvencenzo/kelso-component-library",
   "private": false,
-  "version": "1.0.2",
+  "version": "1.0.5",
   "license": "MIT",
   "type": "module",
   "scripts": {
