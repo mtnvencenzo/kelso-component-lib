@@ -1,7 +1,7 @@
 {
   "name": "@mtnvencenzo/kelso-component-library",
   "private": false,
-  "version": "1.0.2",
+  "version": "1.0.7",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -15,6 +15,9 @@
     "coverage": "vitest run --coverage",
     "pre-ins": "rm -rf node_modules",
     "ins": "yarn install --immutable --immutable-cache --check-cache --network-timeout 100000"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "files": [
     "dist/**"
