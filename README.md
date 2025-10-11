@@ -1,12 +1,12 @@
-# Kelso Component Library
+# 📚 Kelso Component Library
 
-A modern React component library built with Material-UI, providing a comprehensive set of reusable components for building enterprise applications.
+A modern React component library built with Material-UI, providing a comprehensive set of reusable components for building enterprise applications. ⚛️
 
 
   <a href="https://github.com/mtnvencenzo/kelso-component-lib/actions/workflows/kelso-component-lib-cicd.yaml"><img src="https://github.com/mtnvencenzo/kelso-component-lib/actions/workflows/kelso-component-lib-cicd.yaml/badge.svg" alt="Build Status"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
 
-## Installation
+## 📦 Installation
 
 ```bash
 npm install @mtnvencenzo/kelso-component-library
@@ -14,11 +14,11 @@ npm install @mtnvencenzo/kelso-component-library
 yarn add @mtnvencenzo/kelso-component-library
 ```
 
-## Documentation
+## 📖 Documentation
 
 For detailed documentation and examples, visit our [Storybook](https://afde-vec-eus-glo-kelso-001-gjhnfkfng8ffg2a6.z02.azurefd.net/).
 
-## Peer Dependencies
+## 🔗 Peer Dependencies
 
 This library requires the following peer dependencies:
 
@@ -32,9 +32,9 @@ This library requires the following peer dependencies:
 }
 ```
 
-## Available Components
+## 🧩 Available Components
 
-### Atoms
+### ⚛️ Atoms
 - `Button` - A customizable button component
 - `IconButton` - A button with an icon
 - `LoadingSkeleton` - A loading placeholder component
@@ -44,7 +44,7 @@ This library requires the following peer dependencies:
 - `ThreeDotMenu` - A menu component with three dots
 - `FieldContainer` - A container for form fields
 
-### Molecules
+### 🧬 Molecules
 - `AddField` - A component for adding new fields
 - `ErrorBoundary` - An error boundary component
 - `FilterField` - A component for filtering data
@@ -52,13 +52,13 @@ This library requires the following peer dependencies:
 - `PageHeader` - A header component for pages
 - `RouterTabPanel` - A panel component for router tabs
 
-### Organisms
+### 🏗️ Organisms
 - `ButtonList` - A list of buttons
 - `FilterableTable` - A table with filtering capabilities
 - `HeaderNavBar` - A navigation bar component
 - `NavigableTable` - A table with navigation capabilities
 
-## Usage
+## 🚀 Usage
 
 ```tsx
 import { Button, PageHeader, FilterableTable } from '@mtnvencenzo/kelso-component-library';
@@ -83,13 +83,13 @@ function MyComponent() {
 }
 ```
 
-## Development
+## 🛠️ Development
 
-### Prerequisites
+### ✅ Prerequisites
 - Node.js
 - Yarn or npm
 
-### Setup
+### ⚙️ Setup
 1. Clone the repository
 2. Install dependencies:
 ```bash
@@ -98,7 +98,7 @@ yarn install
 npm install
 ```
 
-### Available Scripts
+### 📜 Available Scripts
 - `yarn loc` - Start development server
 - `yarn build:prod` - Build for production
 - `yarn lint` - Run ESLint
@@ -106,10 +106,10 @@ npm install
 - `yarn test` - Run tests
 - `yarn coverage` - Run tests with coverage
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For more information, visit our [GitHub Package](https://github.com/users/mtnvencenzo/packages/npm/package/kelso-component-library).
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
