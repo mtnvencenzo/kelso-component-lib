@@ -106,9 +106,6 @@ npm install
 - `yarn test` - Run tests
 - `yarn coverage` - Run tests with coverage
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. For more information, visit our [GitHub Package](https://github.com/users/mtnvencenzo/packages/npm/package/kelso-component-library).
 
 ## 📄 License
 
